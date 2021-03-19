@@ -1,13 +1,9 @@
 package fr.ntdt.ezloc.immo.spi.data.entity;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 
 // import lombok.Data;
 // import lombok.NoArgsConstructor;
@@ -19,10 +15,17 @@ public class Address extends AbstractDatedEntity implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
+    @Column(nullable = false, length = 250)
     private String street;
+
+    @Column(nullable = false, length = 10)
     private String zipCode;
+
+    @Column(nullable = false, length = 120)
     private String city;
+    
     // Country code (ISO 3166)
+    @Column(nullable = false, length = 2)
     private String country;
 
     /**

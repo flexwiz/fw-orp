@@ -9,11 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -51,7 +49,7 @@ public class RealEstateService {
             realEstateDto.getTitle(), userId);
 
         RealEstate realEstateEntity = mapper.dtoToEntity(realEstateDto);
-        realEstateEntity.setUserId(userId);
+        realEstateEntity.setCreatedByUserId(userId);
 
         try {
             RealEstate realEstateRecord = repository.save(realEstateEntity);

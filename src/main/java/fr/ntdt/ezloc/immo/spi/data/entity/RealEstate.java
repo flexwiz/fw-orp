@@ -1,12 +1,10 @@
 package fr.ntdt.ezloc.immo.spi.data.entity;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 // import lombok.Data;
 // import lombok.NoArgsConstructor;
@@ -24,11 +22,20 @@ public class RealEstate extends AbstractDatedEntity implements Serializable {
         APARTMENT
     };
 
+    @Enumerated(EnumType.STRING)
     private Type type;
+
+    @Column(nullable = false, length = 50)
     private String title;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
     private Address address;
+
+    @Column(nullable = false, length = 1024)
     private String description;
 
+    @OneToMany(targetEntity = Equipment.class, mappedBy = "realEstate")
     private List<Equipment> equipments;
 
     /**

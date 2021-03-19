@@ -2,14 +2,9 @@ package fr.ntdt.ezloc.immo.spi.data.entity;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+import javax.persistence.*;
 
 // @MappedSuperclass
 @Entity
@@ -22,9 +17,16 @@ public abstract class AbstractDatedEntity implements Serializable {
 	// private Long id;
 	
     @Id
+    @Column(nullable = false, updatable = false)
     protected UUID id;
+
+    @Column(nullable = false, updatable = false)
     protected UUID createdByUserId;
+
+    @Column(nullable = false, updatable = false)
     protected OffsetDateTime dateCreated;
+
+    @Column(nullable = false)
     protected OffsetDateTime lastUpdated;
 
     /**
@@ -53,7 +55,7 @@ public abstract class AbstractDatedEntity implements Serializable {
     /**
      * @return the User identifier
      */
-    public UUID getUserId() {
+    public UUID getCreatedByUserId() {
         return createdByUserId;
     }
 
@@ -61,7 +63,7 @@ public abstract class AbstractDatedEntity implements Serializable {
      * Set user identifier who create the entity
      * @param createdByUserId an user identifier
      */
-    public void setUserId(UUID createdByUserId) {
+    public void setCreatedByUserId(UUID createdByUserId) {
         this.createdByUserId = createdByUserId;
     }
 

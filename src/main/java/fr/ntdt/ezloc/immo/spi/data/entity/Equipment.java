@@ -2,11 +2,11 @@ package fr.ntdt.ezloc.immo.spi.data.entity;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 // import lombok.Data;
 // import lombok.NoArgsConstructor;
@@ -18,15 +18,30 @@ public class Equipment extends AbstractDatedEntity implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
+    @Column(nullable = false, length = 25)
     private String serialNumber;
+
+    @Column(nullable = false, length = 120)
     private String name;
+
+    @Column(nullable = false, length = 25)
     private String type;
+
     // Date of the appropriate equipment is installed
+    @Column(nullable = false)
     private OffsetDateTime installedDate;
+
     // Date of the last revision
+    @Column(nullable = true)
     private OffsetDateTime lastRevision;
+
     // Comments
+    @Column(length = 1024)
     private String comment;
+
+    @ManyToOne
+    @JoinColumn(name = "real_estate_id", nullable = false)
+    private RealEstate realEstate;
 
     /**
      * Create new equipment with a random ID
@@ -36,12 +51,11 @@ public class Equipment extends AbstractDatedEntity implements Serializable {
     }
 
     /**
-     * Create new address with all information
+     * Create new equipment with all information
      * 
-     * @param serialNumber address street
-     * @param zipCode zip code
-     * @param city city
-     * @param country country iso code
+     * @param name name
+     * @param type type of equipment
+     * @param serialNumber serial number
      */
     public Equipment(String name, String type, String serialNumber) {
         super();

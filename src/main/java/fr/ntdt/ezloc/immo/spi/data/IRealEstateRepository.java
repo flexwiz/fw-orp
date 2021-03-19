@@ -1,16 +1,16 @@
 package fr.ntdt.ezloc.immo.spi.data;
 
 import fr.ntdt.ezloc.immo.spi.data.entity.RealEstate;
-//import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Set;
 import java.util.UUID;
 
-public interface IRealEstateRepository /*extends JpaRepository<RealEstate, UUID>*/ {
+public interface IRealEstateRepository extends JpaRepository<RealEstate, UUID> {
 
-    RealEstate save(RealEstate entity);
+    //RealEstate save(RealEstate entity);
 
-    Set<RealEstate> findRealEstatesByUserId(UUID id);
+    Set<RealEstate> findRealEstatesByCreatedByUserId(UUID id);
 
     RealEstate findRealEstateById(UUID id);
 

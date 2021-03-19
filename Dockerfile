@@ -57,7 +57,7 @@ COPY --from=builder /app/target/*.jar ezloc-immo.jar
 
 # Expose port 4500 on the container
 # Expose ports are only accessible to other containers on the same Docker network
-EXPOSE 4500
+EXPOSE 4500 8080
 
 # Run application when container is started
 CMD ["java", "-jar", "ezloc-immo.jar"]
