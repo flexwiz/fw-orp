@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 // @Data
 // @NoArgsConstructor
 @Entity
-public class Address extends AbstractDatedEntity implements Serializable {
+public class AddressEntity extends AbstractDatedEntity implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -31,7 +31,7 @@ public class Address extends AbstractDatedEntity implements Serializable {
     /**
      * Create new address with a random ID
      */
-    public Address() {
+    public AddressEntity() {
         super();
     }
 
@@ -43,7 +43,7 @@ public class Address extends AbstractDatedEntity implements Serializable {
      * @param city city
      * @param country country iso code
      */
-    public Address(String street, String zipCode, String city, String country) {
+    public AddressEntity(String street, String zipCode, String city, String country) {
         super();
         this.street = street;
         this.zipCode = zipCode;
@@ -61,7 +61,7 @@ public class Address extends AbstractDatedEntity implements Serializable {
         this.street = street;
     }
 
-    public Address street(String street) 
+    public AddressEntity street(String street)
     {
         setStreet(street);
         return this;
@@ -77,7 +77,7 @@ public class Address extends AbstractDatedEntity implements Serializable {
         this.zipCode = zipCode;
     }
 
-    public Address zipCode(String zipCode) 
+    public AddressEntity zipCode(String zipCode)
     {
         setZipCode(zipCode);
         return this;
@@ -93,7 +93,7 @@ public class Address extends AbstractDatedEntity implements Serializable {
         this.city = city;
     }
 
-    public Address city(String city) 
+    public AddressEntity city(String city)
     {
         setCity(city);
         return this;
@@ -109,7 +109,7 @@ public class Address extends AbstractDatedEntity implements Serializable {
         this.country = country;
     }
 
-    public Address country(String country) 
+    public AddressEntity country(String country)
     {
         setCountry(country);
         return this;
@@ -117,7 +117,7 @@ public class Address extends AbstractDatedEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Address [" + super.toString() + ", street=" + street + ", zipCode=" + zipCode + ", city=" + city + ", country=" + country + "]";
+		return "AddressEntity [" + super.toString() + ", street=" + street + ", zipCode=" + zipCode + ", city=" + city + ", country=" + country + "]";
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class Address extends AbstractDatedEntity implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Address other = (Address) obj;
+		AddressEntity other = (AddressEntity) obj;
 		if (!super.equals(other))
 			return false;
 		

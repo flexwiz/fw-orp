@@ -1,9 +1,9 @@
 package fr.ntdt.ezloc.immo.service;
 
-import fr.ntdt.ezloc.immo.service.dto.RealEstateDto;
+import fr.ntdt.ezloc.immo.service.dto.RealEstate;
 import fr.ntdt.ezloc.immo.service.mapper.RealEstateMapper;
 import fr.ntdt.ezloc.immo.spi.data.IRealEstateRepository;
-import fr.ntdt.ezloc.immo.spi.data.entity.RealEstate;
+import fr.ntdt.ezloc.immo.spi.data.entity.RealEstateEntity;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,7 +37,7 @@ public class RealEstateService {
      * @return an ID of the saved real estate
      * @throws RealEstateServiceException
      */
-    public UUID createRealEstate(UUID userId, RealEstateDto realEstateDto) throws RealEstateServiceException {
+    public UUID createRealEstate(UUID userId, RealEstate realEstateDto) throws RealEstateServiceException {
         if (userId == null) {
             throw new IllegalArgumentException("The given user ID must not be null");
         }
@@ -48,11 +48,11 @@ public class RealEstateService {
         log.debug("Try to create new real estate {} requested by {}.", 
             realEstateDto.getTitle(), userId);
 
-        RealEstate realEstateEntity = mapper.dtoToEntity(realEstateDto);
+        RealEstateEntity realEstateEntity = mapper.dtoToEntity(realEstateDto);
         realEstateEntity.setCreatedByUserId(userId);
 
         try {
-            RealEstate realEstateRecord = repository.save(realEstateEntity);
+            RealEstateEntity realEstateRecord = repository.save(realEstateEntity);
 
             log.debug("Book {} saved to database. Created timestamp {}", 
                 realEstateRecord.getId(), realEstateRecord.getDateCreated());
@@ -70,7 +70,7 @@ public class RealEstateService {
      * @return a list of real estates.
      * @throws RealEstateServiceException
      */
-    public List<RealEstateDto> getAllRealEstatesByUserId(UUID userId) throws RealEstateServiceException {
+    public List<RealEstate> getAllRealEstatesByUserId(UUID userId) throws RealEstateServiceException {
         return null;
     }
 
@@ -82,7 +82,7 @@ public class RealEstateService {
      * @return a real estate if exists or null
      * @throws RealEstateServiceException
      */
-    public RealEstateDto getRealEstate(UUID userId, UUID realEstateId) throws RealEstateServiceException {
+    public RealEstate getRealEstate(UUID userId, UUID realEstateId) throws RealEstateServiceException {
         return null;
     }
 }

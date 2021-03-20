@@ -1,8 +1,7 @@
 package fr.ntdt.ezloc.immo.service.mapper;
 
-import fr.ntdt.ezloc.immo.service.RealEstateService;
-import fr.ntdt.ezloc.immo.service.dto.RealEstateDto;
-import fr.ntdt.ezloc.immo.spi.data.entity.RealEstate;
+import fr.ntdt.ezloc.immo.service.dto.RealEstate;
+import fr.ntdt.ezloc.immo.spi.data.entity.RealEstateEntity;
 
 
 //import lombok.extern.slf4j.Slf4j;
@@ -32,15 +31,15 @@ public class RealEstateMapper {
     }
 
     /**
-     * Convert a real estate DTO (RealEstateDto) to new  real estate entity instance (RealEstate)
+     * Convert a real estate DTO @{RealEstate} to new real estate entity @{RealEstateEntity} instance 
      * 
-     * @param dto Instance of RealEstateDto
+     * @param dto a real estate @{RealEstate} instance to convert
      * @return RealEstate instance
      */
-    public RealEstate dtoToEntity(RealEstateDto dto) {
-        log.debug("Convert 'RealEstateDto' instance to new real estate entity. ['title' {}]", dto.getTitle());
+    public RealEstateEntity dtoToEntity(RealEstate dto) {
+        log.debug("Convert 'RealEstate' DTO instance to new real estate entity. ['title' {}]", dto.getTitle());
 
-        RealEstate entity = mapper.map(dto, RealEstate.class);
+        RealEstateEntity entity = mapper.map(dto, RealEstateEntity.class);
         entity.setId(UUID.randomUUID());
 
         log.debug("Real estate entity {} with id {} initialized.", entity.getTitle(), entity.getId());
@@ -53,10 +52,10 @@ public class RealEstateMapper {
      * @param entity A real estate
      * @return A real estate DTO instance
      */
-    public RealEstateDto entityToDto(RealEstate entity) {
+    public RealEstate entityToDto(RealEstateEntity entity) {
         log.debug("Convert 'RealEstate' entity to DTO. ['id': {}, 'title', {}]", entity.getId(), entity.getTitle());
 
-        RealEstateDto dto = mapper.map(entity, RealEstateDto.class);
+        RealEstate dto = mapper.map(entity, RealEstate.class);
 
         log.debug("DTO '{}' initialized.", dto.getTitle());
         return dto;

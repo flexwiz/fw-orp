@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 // @Data
 // @NoArgsConstructor
 @Entity
-public class Equipment extends AbstractDatedEntity implements Serializable {
+public class EquipmentEntity extends AbstractDatedEntity implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -41,12 +41,12 @@ public class Equipment extends AbstractDatedEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "real_estate_id", nullable = false)
-    private RealEstate realEstate;
+    private RealEstateEntity realEstate;
 
     /**
      * Create new equipment with a random ID
      */
-    public Equipment() {
+    public EquipmentEntity() {
         super();
     }
 
@@ -57,7 +57,7 @@ public class Equipment extends AbstractDatedEntity implements Serializable {
      * @param type type of equipment
      * @param serialNumber serial number
      */
-    public Equipment(String name, String type, String serialNumber) {
+    public EquipmentEntity(String name, String type, String serialNumber) {
         super();
         this.name = name;
         this.type = type;
@@ -74,7 +74,7 @@ public class Equipment extends AbstractDatedEntity implements Serializable {
         this.serialNumber = serialNumber;
     }
 
-    public Equipment serialNumber(String serialNumber) 
+    public EquipmentEntity serialNumber(String serialNumber)
     {
         setSerialNumber(serialNumber);
         return this;
@@ -90,7 +90,7 @@ public class Equipment extends AbstractDatedEntity implements Serializable {
         this.name = name;
     }
 
-    public Equipment name(String name) 
+    public EquipmentEntity name(String name)
     {
         setName(name);
         return this;
@@ -106,7 +106,7 @@ public class Equipment extends AbstractDatedEntity implements Serializable {
         this.type = type;
     }
 
-    public Equipment type(String type) 
+    public EquipmentEntity type(String type)
     {
         setType(type);
         return this;
@@ -122,7 +122,7 @@ public class Equipment extends AbstractDatedEntity implements Serializable {
         this.installedDate = installedDate;
     }
 
-    public Equipment installedDate(OffsetDateTime installedDate) 
+    public EquipmentEntity installedDate(OffsetDateTime installedDate)
     {
         setInstalledDate(installedDate);
         return this;
@@ -138,7 +138,7 @@ public class Equipment extends AbstractDatedEntity implements Serializable {
         this.lastRevision = lastRevision;
     }
 
-    public Equipment lastRevision(OffsetDateTime lastRevision) 
+    public EquipmentEntity lastRevision(OffsetDateTime lastRevision)
     {
         setLastRevision(lastRevision);
         return this;
@@ -154,7 +154,7 @@ public class Equipment extends AbstractDatedEntity implements Serializable {
         this.comment = comment;
     }
 
-    public Equipment comment(String comment) 
+    public EquipmentEntity comment(String comment)
     {
         setComment(comment);
         return this;
@@ -162,7 +162,7 @@ public class Equipment extends AbstractDatedEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Address [" + super.toString() + ", serialNumber=" + serialNumber + ", name=" + name + ", type=" + type + "]";
+		return "AddressEntity [" + super.toString() + ", serialNumber=" + serialNumber + ", name=" + name + ", type=" + type + "]";
 	}
 
 	@Override
@@ -182,7 +182,7 @@ public class Equipment extends AbstractDatedEntity implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Equipment other = (Equipment) obj;
+		EquipmentEntity other = (EquipmentEntity) obj;
 
         return hashCode() == other.hashCode();
 	}

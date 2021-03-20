@@ -2,15 +2,12 @@ package fr.ntdt.ezloc.immo.service.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class AddressDto implements Serializable {
+public class Address implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -30,7 +27,7 @@ public class AddressDto implements Serializable {
         this.street = street;
     }
 
-    public AddressDto street(String street) 
+    public Address street(String street)
     {
         setStreet(street);
         return this;
@@ -46,7 +43,7 @@ public class AddressDto implements Serializable {
         this.zipCode = zipCode;
     }
 
-    public AddressDto zipCode(String zipCode) 
+    public Address zipCode(String zipCode)
     {
         setZipCode(zipCode);
         return this;
@@ -62,7 +59,7 @@ public class AddressDto implements Serializable {
         this.city = city;
     }
 
-    public AddressDto city(String city) 
+    public Address city(String city)
     {
         setCity(city);
         return this;
@@ -78,7 +75,7 @@ public class AddressDto implements Serializable {
         this.country = country;
     }
 
-    public AddressDto country(String country) 
+    public Address country(String country)
     {
         setCountry(country);
         return this;
@@ -86,6 +83,6 @@ public class AddressDto implements Serializable {
 
 	@Override
 	public String toString() {
-		return "AddressDto [street=" + street + ", zipCode=" + zipCode + ", city=" + city + ", country=" + country + "]";
+		return "Address [street=" + street + ", zipCode=" + zipCode + ", city=" + city + ", country=" + country + "]";
 	}
 }

@@ -5,13 +5,11 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
-import java.util.List;
 
 
 @Data
 @NoArgsConstructor
-public class RealEstateDto implements Serializable {
+public class RealEstate implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -25,7 +23,7 @@ public class RealEstateDto implements Serializable {
     private Type type;
     private String title;
     private String description;
-    private AddressDto address;
+    private Address address;
 
     public Type getType() 
     {
@@ -37,23 +35,23 @@ public class RealEstateDto implements Serializable {
         this.type = type;
     }
 
-    public RealEstateDto type(Type type) 
+    public RealEstate type(Type type)
     {
         setType(type);
         return this;
     }
 
-    public AddressDto getAddress() 
+    public Address getAddress()
     {
         return this.address;
     }
 
-    public void setAddress(AddressDto address) 
+    public void setAddress(Address address)
     {
         this.address = address;
     }
 
-    public RealEstateDto address(AddressDto address) 
+    public RealEstate address(Address address)
     {
         setAddress(address);
         return this;
@@ -69,7 +67,7 @@ public class RealEstateDto implements Serializable {
         this.title = title;
     }
 
-    public RealEstateDto title(String title) 
+    public RealEstate title(String title)
     {
         setTitle(title);
         return this;
@@ -85,7 +83,7 @@ public class RealEstateDto implements Serializable {
         this.description = description;
     }
 
-    public RealEstateDto description(String description) 
+    public RealEstate description(String description)
     {
         setDescription(description);
         return this;
@@ -93,6 +91,6 @@ public class RealEstateDto implements Serializable {
 
 	@Override
 	public String toString() {
-		return "RealEstateDto [type=" + type + ", title=" + title + ", address=" + address + "]";
+		return "RealEstate [type=" + type + ", title=" + title + ", address=" + address + "]";
 	}
 }

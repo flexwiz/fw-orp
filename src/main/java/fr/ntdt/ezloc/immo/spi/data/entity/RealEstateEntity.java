@@ -12,7 +12,7 @@ import javax.persistence.*;
 // @Data
 // @NoArgsConstructor
 @Entity
-public class RealEstate extends AbstractDatedEntity implements Serializable {
+public class RealEstateEntity extends AbstractDatedEntity implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -30,18 +30,18 @@ public class RealEstate extends AbstractDatedEntity implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
-    private Address address;
+    private AddressEntity address;
 
     @Column(nullable = false, length = 1024)
     private String description;
 
-    @OneToMany(targetEntity = Equipment.class, mappedBy = "realEstate")
-    private List<Equipment> equipments;
+    @OneToMany(targetEntity = EquipmentEntity.class, mappedBy = "realEstate")
+    private List<EquipmentEntity> equipments;
 
     /**
      * Create new real estate with a random ID
      */
-    public RealEstate() {
+    public RealEstateEntity() {
         super();
     }
 
@@ -50,7 +50,7 @@ public class RealEstate extends AbstractDatedEntity implements Serializable {
      * 
      * @param type a real estate type
      */
-    public RealEstate(Type type) {
+    public RealEstateEntity(Type type) {
         super();
         this.type = type;
     }
@@ -65,23 +65,23 @@ public class RealEstate extends AbstractDatedEntity implements Serializable {
         this.type = type;
     }
 
-    public RealEstate type(Type type) 
+    public RealEstateEntity type(Type type)
     {
         setType(type);
         return this;
     }
 
-    public Address getAddress() 
+    public AddressEntity getAddress()
     {
         return this.address;
     }
 
-    public void setAddress(Address address) 
+    public void setAddress(AddressEntity address)
     {
         this.address = address;
     }
 
-    public RealEstate address(Address address) 
+    public RealEstateEntity address(AddressEntity address)
     {
         setAddress(address);
         return this;
@@ -97,7 +97,7 @@ public class RealEstate extends AbstractDatedEntity implements Serializable {
         this.title = title;
     }
 
-    public RealEstate title(String title) 
+    public RealEstateEntity title(String title)
     {
         setTitle(title);
         return this;
@@ -113,36 +113,36 @@ public class RealEstate extends AbstractDatedEntity implements Serializable {
         this.description = description;
     }
 
-    public RealEstate description(String description) 
+    public RealEstateEntity description(String description)
     {
         setDescription(description);
         return this;
     }
 
-    public List<Equipment> getEquipments() 
+    public List<EquipmentEntity> getEquipments()
     {
         return this.equipments;
     }
 
-    public void setEquipments(List<Equipment> equipments) 
+    public void setEquipments(List<EquipmentEntity> equipments)
     {
         this.equipments = equipments;
     }
 
-    public RealEstate equipments(List<Equipment> equipments) 
+    public RealEstateEntity equipments(List<EquipmentEntity> equipments)
     {
         setEquipments(equipments);
         return this;
     }
 
-    public void addEquipment(Equipment equipment) { 
+    public void addEquipment(EquipmentEntity equipment) {
         if (this.equipments == null)
             this.equipments = Arrays.asList(equipment);
         else
             this.equipments.add(equipment); 
     }
 
-    public void removeEquipment(Equipment equipment) { 
+    public void removeEquipment(EquipmentEntity equipment) {
         if (this.equipments != null)
             this.equipments.remove(equipment);
     }
@@ -153,7 +153,7 @@ public class RealEstate extends AbstractDatedEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "RealEstate [" + super.toString() + ", type=" + type + ", title=" + title + ", address=" + address + "]";
+		return "RealEstateEntity [" + super.toString() + ", type=" + type + ", title=" + title + ", address=" + address + "]";
 	}
 
 	@Override
@@ -174,7 +174,7 @@ public class RealEstate extends AbstractDatedEntity implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		RealEstate other = (RealEstate) obj;
+		RealEstateEntity other = (RealEstateEntity) obj;
 
 		return hashCode() == other.hashCode();
 	}
