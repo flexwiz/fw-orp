@@ -1,9 +1,12 @@
-package fr.ntdt.ezloc;
+package fr.ntdt.ezloc.api.rest;
 
+import fr.ntdt.ezloc.api.ApiResource;
 import fr.ntdt.ezloc.spi.data.RealEstate;
 import fr.ntdt.ezloc.dto.CreateRealEstateRequest;
 import fr.ntdt.ezloc.dto.RealEstateDto;
 import fr.ntdt.ezloc.service.ImmoService;
+import org.jboss.resteasy.annotations.ResponseObject;
+import org.jboss.resteasy.annotations.Status;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -15,7 +18,7 @@ import java.util.List;
 
 @Path("/real-states")
 @Produces(MediaType.APPLICATION_JSON)
-public class ImmoResource {
+public class ImmoRest implements ApiResource {
 
     @Inject
     ImmoService immoService;
@@ -37,9 +40,8 @@ public class ImmoResource {
 
     @POST
     @Transactional
-    public Response create(@Valid CreateRealEstateRequest request){
-        Long id = immoService.create(request);
-        return Response.status(Response.Status.CREATED).entity(id).build();
+    public Long create(@Valid CreateRealEstateRequest request){
+        return immoService.create(request);
     }
 
     @GET
