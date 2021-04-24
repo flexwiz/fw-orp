@@ -8,7 +8,7 @@ workflows:
   build:
     jobs:
       - build
-      - push_image_registry
+      #- push_image_registry
   maven_test:
     jobs:
       - maven/test
@@ -25,6 +25,10 @@ jobs:
       # build the application image
       - run: docker build -t ${DOCKER_REGISTRY}/ezloc-immo:$CIRCLE_BRANCH .   
 
+      - run: docker login -u ${DOCKER_REGISTRY_USER_NAME} -p ${DOCKER_REGISTRY_USER_PASSWORD}
+      
+      - run: docker push ${DOCKER_REGISTRY}/ezloc-immo:$CIRCLE_BRANCH
+
       # notify to slack
       - slack/notify:
           branch_pattern: master
@@ -36,11 +40,11 @@ jobs:
           mentions: '@ntran'
           template: basic_fail_1
 
-  push_image_registry:
-    executor: docker
-    steps:
-      - run:
-          name: Push docker image to registry
-          command: |
-              docker login -u ${DOCKER_REGISTRY_USER_NAME} -p ${DOCKER_REGISTRY_USER_PASSWORD}
-              docker push ${DOCKER_REGISTRY}/ezloc-immo:$CIRCLE_BRANCH
+  # push_image_registry:
+  #   executor: docker
+  #   steps:
+  #     - run:
+  #         name: Push docker image to registry
+  #         command: |
+  #             docker login -u ${DOCKER_REGISTRY_USER_NAME} -p ${DOCKER_REGISTRY_USER_PASSWORD}
+  #             docker push ${DOCKER_REGISTRY}/ezloc-immo:$CIRCLE_BRANCH
