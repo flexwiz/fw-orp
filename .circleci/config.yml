@@ -8,7 +8,7 @@ workflows:
   build:
     jobs:
       - build
-      - docker_push_registry
+      - push_image_registry
   maven_test:
     jobs:
       - maven/test
@@ -36,7 +36,7 @@ jobs:
           mentions: '@ntran'
           template: basic_fail_1
 
-  push_registry:
+  push_image_registry:
     executor: docker
     steps:
       - run:
