@@ -36,11 +36,9 @@ jobs:
           mentions: '@ntran'
           template: basic_fail_1
 
-  docker_push_registry:
+  push_registry:
     executor: docker
     steps:
-      - setup_remote_docker:
-          docker_layer_caching: true
       - run:
           name: Push docker image to registry
           command: |
