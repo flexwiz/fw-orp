@@ -7,16 +7,24 @@ orbs:
 workflows:
   build:
     jobs:
-      - build_project
+      - build
   maven_test:
     jobs:
       - maven/test
 
 jobs:
-  build_project:
+  build:
     machine: true
     steps:
-      - run: mvn clean package
+      - checkout
+
+      # build the application with Maven
+      # - run: mvn clean package
+
+      # build the application image
+      - run: docker build -t ${DOCKER_REGISTRY}/ezloc-immo:$CIRCLE_BRANCH .   
+
+      # notify to slack
       - slack/notify:
           branch_pattern: master
           event: fail
@@ -27,18 +35,16 @@ jobs:
           mentions: '@ntran'
           template: basic_fail_1
 
-  # docker_push_registry:
-  #   executor: docker
-  #   steps:
-  #     - setup_remote_docker:
-  #         docker_layer_caching: true
-  #     - docker_login:
-  #         registry: ${DOCKER_REGISTRY}
-  #         login: ${DOCKER_REGISTRY_USER_NAME}
-  #         password: ${DOCKER_REGISTRY_USER_PASSWORD}
-  #     - run:
-  #         name: Push docker image to registry
-  #         command: |
-  #             docker pull << pipeline.parameters.circleci_docker_image_name >>
-  #             docker tag << pipeline.parameters.circleci_docker_image_name >> ${DOCKER_REGISTRY_PROD}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_TAG}
-  #             docker push ${DOCKER_REGISTRY_PROD}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_TAG}
+  docker_push_registry:
+    executor: docker
+    steps:
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - docker_login:
+          registry: ${DOCKER_REGISTRY}
+          login: ${DOCKER_REGISTRY_USER_NAME}
+          password: ${DOCKER_REGISTRY_USER_PASSWORD}
+      - run:
+          name: Push docker image to registry
+          command: |
+              docker push ${DOCKER_REGISTRY}/ezloc-immo:$CIRCLE_BRANCH
