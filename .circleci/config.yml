@@ -1,9 +1,44 @@
 version: 2.1
 
 orbs:
+  slack: circleci/slack@4.1
   maven: circleci/maven@1.1
-
+                 
 workflows:
+  build:
+    jobs:
+      - build_project
   maven_test:
     jobs:
       - maven/test
+
+jobs:
+  build_project:
+    machine: true
+    steps:
+      - run: mvn clean package
+      - slack/notify:
+          branch_pattern: master
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          branch_pattern: develop
+          event: fail
+          mentions: '@ntran'
+          template: basic_fail_1
+
+  # docker_push_registry:
+  #   executor: docker
+  #   steps:
+  #     - setup_remote_docker:
+  #         docker_layer_caching: true
+  #     - docker_login:
+  #         registry: ${DOCKER_REGISTRY}
+  #         login: ${DOCKER_REGISTRY_USER_NAME}
+  #         password: ${DOCKER_REGISTRY_USER_PASSWORD}
+  #     - run:
+  #         name: Push docker image to registry
+  #         command: |
+  #             docker pull << pipeline.parameters.circleci_docker_image_name >>
+  #             docker tag << pipeline.parameters.circleci_docker_image_name >> ${DOCKER_REGISTRY_PROD}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_TAG}
+  #             docker push ${DOCKER_REGISTRY_PROD}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_TAG}
