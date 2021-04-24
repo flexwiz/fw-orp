@@ -41,11 +41,8 @@ jobs:
     steps:
       - setup_remote_docker:
           docker_layer_caching: true
-      - docker_login:
-          registry: ${DOCKER_REGISTRY}
-          login: ${DOCKER_REGISTRY_USER_NAME}
-          password: ${DOCKER_REGISTRY_USER_PASSWORD}
       - run:
           name: Push docker image to registry
           command: |
+              docker login -u ${DOCKER_REGISTRY_USER_NAME} -p ${DOCKER_REGISTRY_USER_PASSWORD}
               docker push ${DOCKER_REGISTRY}/ezloc-immo:$CIRCLE_BRANCH
