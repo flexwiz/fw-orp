@@ -8,6 +8,7 @@ workflows:
   build:
     jobs:
       - build
+      - docker_push_registry
   maven_test:
     jobs:
       - maven/test
