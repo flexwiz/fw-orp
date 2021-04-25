@@ -25,7 +25,7 @@ jobs:
       # build the application image
       - run: docker build -t ${DOCKER_REGISTRY}/ezloc-immo:$CIRCLE_BRANCH .   
 
-      #- run: docker login -u ${DOCKER_REGISTRY_USER_NAME} -p ${DOCKER_REGISTRY_USER_PASSWORD}
+      - run: docker login -u ${DOCKER_REGISTRY_USER_NAME} -p ${DOCKER_REGISTRY_USER_PASSWORD}
       
       - run: docker push ${DOCKER_REGISTRY}/ezloc-immo:$CIRCLE_BRANCH
 
