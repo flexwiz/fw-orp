@@ -49,8 +49,8 @@ jobs:
           name: Push Docker image to Docker Hub registry
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              docker tag ezloc-immo "${IMAGE_REGISTRY}/ezloc-immo:${CIRCLE_SHA1}"
-              docker push "${IMAGE_REGISTRY}/ezloc-immo:${CIRCLE_SHA1}"
+              docker tag ezloc-immo "${IMAGE_REGISTRY}/ezloc-immo"
+              docker push "${IMAGE_REGISTRY}/ezloc-immo"
             fi
 
   deploy-stage:
