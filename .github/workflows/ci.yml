@@ -28,8 +28,8 @@ jobs:
   #init:
 
   check-quality:
+    name: Check code quality
     runs-on: ubuntu-latest
-    name: A job to check my code quality
     steps:
     - name: Check code meets quality standards
       id: code-inspector
@@ -43,19 +43,18 @@ jobs:
         max_defects_rate: '0.0001'
         max_complex_functions_rate: '0.0001'
         max_long_functions_rate: '0.0001'
-        project_name: ''
+        project_name: 'ezloc-immo'
         max_timeout_sec: '600'
 
   build:
-    needs: check-quality
-    
+    name: Build and push Docker image to the registry Docker Hub
+    #needs: check-quality
     runs-on: # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
       - ubuntu-20.04
 #    runs-on: ${{ matrix.os }}
 #    strategy:
 #      matrix:
 #        os: [ubuntu-latest, windows-lastest, macOS-latest]
-
     steps: # Build and push Docker image to Docker Registry
     - name: Checkout
       uses: actions/checkout@v2
