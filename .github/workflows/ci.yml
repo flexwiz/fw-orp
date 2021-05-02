@@ -1,15 +1,27 @@
 # This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
 # For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
 
-name: Immo Microservice CI & CD pipeline 
+
+name: Immo Microservice CI & CD pipeline
 
 on:
+  # schedule: # https://docs.github.com/en/actions/reference/events-that-trigger-workflows#schedule
+  #   # * is a special character in YAML so you have to quote this string
+  #   - cron:  '30 5,17 * * *'
   push:
     branches: [master, develop]
+    paths-ignore:
+      - 'docs/**'
+      - 'images/**'
   pull_request:
-    branches: [master, develop]
+    branches:
+      - master
+      - develop
+  # Also trigger on page_build, as well as release created events
+  page_build:
   release:
-    types: [created]
+    types: # This configuration does not affect the page_build event above
+      - created
 
 jobs:
 
@@ -18,7 +30,8 @@ jobs:
   build:
     #needs: init
     
-    runs-on: ubuntu-latest
+    runs-on: # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+      - ubuntu-20.04
 #    runs-on: ${{ matrix.os }}
 #    strategy:
 #      matrix:
@@ -46,7 +59,7 @@ jobs:
         
 #  publish:
     
-#    needs: build
+#    needs: [init, build]
     
 #    runs-on: ${{ matrix.os }}
 #    strategy:
