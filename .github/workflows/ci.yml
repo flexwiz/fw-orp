@@ -41,6 +41,10 @@ jobs:
     #     GITHUB_TOKEN: ${{ github.token }}
   
   publish:
-    runs-on: ${{ matrix.os }}
+    
     needs: build
     
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-lastest, macOS-latest]
