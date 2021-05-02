@@ -50,6 +50,7 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               docker tag ezloc-immo "${IMAGE_REGISTRY}/ezloc-immo"
+              echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
               docker push "${IMAGE_REGISTRY}/ezloc-immo"
             fi
 
@@ -83,12 +84,9 @@ jobs:
 
 workflows:
   version: 2
-  deploy:
+  wkf-build-deploy:
     jobs:
       - build:
-          context:
-            - build-env-vars
-            - docker-hub-creds
           filters:
             branches:
               ignore:
