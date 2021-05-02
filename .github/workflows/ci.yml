@@ -1,0 +1,85 @@
+# This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
+# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
+
+
+name: Immo Microservice CI & CD pipeline
+
+on:
+  # schedule: # https://docs.github.com/en/actions/reference/events-that-trigger-workflows#schedule
+  #   # * is a special character in YAML so you have to quote this string
+  #   - cron:  '30 5,17 * * *'
+  push:
+    branches: [master, develop]
+    paths-ignore:
+      - 'docs/**'
+      - 'images/**'
+  pull_request:
+    branches:
+      - master
+      - develop
+  # Also trigger on page_build, as well as release created events
+  page_build:
+  release:
+    types: # This configuration does not affect the page_build event above
+      - created
+
+jobs:
+
+  #init:
+
+  check-quality:
+    name: Check code quality
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check code meets quality standards
+      id: code-inspector
+      uses: codeinspectorio/github-action@master
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        code_inspector_access_key: ${{ secrets.CODE_INSPECTOR_ACCESS_KEY }}
+        code_inspector_secret_key: ${{ secrets.CODE_INSPECTOR_SECRET_KEY }}
+        min_quality_grade: 'WARNING'
+        min_quality_score: '50'
+        max_defects_rate: '0.01' #'0.0001'
+        max_complex_functions_rate: '0.01' #'0.0001'
+        max_long_functions_rate: '0.01' #'0.0001'
+        project_name: 'ezloc-immo'
+        max_timeout_sec: '600'
+
+  build:
+    name: Build and push Docker image to the registry Docker Hub
+    needs: check-quality
+    runs-on: # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+      - ubuntu-20.04
+#    runs-on: ${{ matrix.os }}
+#    strategy:
+#      matrix:
+#        os: [ubuntu-latest, windows-lastest, macOS-latest]
+    steps: # Build and push Docker image to Docker Registry
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        registry: docker.io
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: ntdtfr/ezloc-immo:latest 
+        
+#  publish:
+    
+#    needs: [check-quality, build]
+    
+#    runs-on: ${{ matrix.os }}
+#    strategy:
+#      matrix:
+#        os: [ubuntu-latest, windows-lastest, macOS-latest]

@@ -1,50 +1,106 @@
-version: 2.1
-
-orbs:
-  slack: circleci/slack@4.1
-  maven: circleci/maven@1.1
-                 
-workflows:
-  build:
-    jobs:
-      - build
-      #- push_image_registry
-  maven_test:
-    jobs:
-      - maven/test
-
+version: 2
 jobs:
   build:
-    machine: true
+    working_directory: /ezloc-immo
+    docker:
+      - image: docker:20.10.6-dind
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
       - checkout
+      - setup_remote_docker
+      #- run:
+      #    name: Install dependencies
+      #    command: |
+            #apk add --no-cache \
+            #  py-pip=9.0.0-r1
+            #pip install \
+            #  docker-compose==1.29.0
+      - restore_cache:
+          keys:
+            - v1-{{ .Branch }}
+          paths:
+            - /caches/ezloc-immo.tar
+      - run:
+          name: Load Docker image layer cache
+          command: |
+            set +o pipefail
+            docker load -i /caches/ezloc-immo.tar | true
+      - run:
+          name: Build application Docker image
+          command: |
+            docker build --cache-from=ezloc-immo -t ezloc-immo .
+      - run:
+          name: Save Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/ezloc-immo.tar ezloc-immo
+      - save_cache:
+          key: v1-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/ezloc-immo.tar
+      - run:
+          name: Run tests
+          command: |
+            echo 'test'
+            #docker-compose -f ./docker-compose.test.yml up
+      - deploy:
+          name: Push Docker image to Docker Hub registry
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              docker tag ezloc-immo "${IMAGE_REGISTRY}/ezloc-immo"
+              echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
+              docker push "${IMAGE_REGISTRY}/ezloc-immo"
+            fi
 
-      # build the application with Maven
-      # - run: mvn clean package
+  deploy-stage:
+    docker:
+      - image: ubuntu:20.04
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    working_directory: /ntdt/ezloc
+    steps:
+      - run:
+          name: Deploy if tests pass and branch is Staging
+          command: |
+            echo 'Deploy staging...'
+            #ansible-playbook site.yml -i staging
 
-      # build the application image
-      - run: docker build -t ${DOCKER_REGISTRY}/ezloc-immo:$CIRCLE_BRANCH .   
+  deploy-prod:
+    docker:
+      - image: ubuntu:20.04
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    working_directory: /ntdt/ezloc
+    steps:
+      - run:
+          name: Deploy if tests pass and branch is Master
+          command: |
+            echo 'Deploy production...'
+            #ansible-playbook site.yml -i production
 
-      - run: docker login -u ${DOCKER_REGISTRY_USER_NAME} -p ${DOCKER_REGISTRY_USER_PASSWORD}
-      
-      - run: docker push ${DOCKER_REGISTRY}/ezloc-immo:$CIRCLE_BRANCH
-
-      # notify to slack
-      - slack/notify:
-          branch_pattern: master
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          branch_pattern: develop
-          event: fail
-          mentions: '@ntran'
-          template: basic_fail_1
-
-  # push_image_registry:
-  #   executor: docker
-  #   steps:
-  #     - run:
-  #         name: Push docker image to registry
-  #         command: |
-  #             docker login -u ${DOCKER_REGISTRY_USER_NAME} -p ${DOCKER_REGISTRY_USER_PASSWORD}
-  #             docker push ${DOCKER_REGISTRY}/ezloc-immo:$CIRCLE_BRANCH
+workflows:
+  version: 2
+  wkf-build-deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore:
+                - develop
+                - /feature-.*/
+      - deploy-stage:
+          requires:
+            - build
+          filters:
+            branches:
+              only: staging
+      - deploy-prod:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
