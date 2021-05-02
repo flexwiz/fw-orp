@@ -1,9 +1,106 @@
-version: 2.1
+version: 2
+jobs:
+  build:
+    docker:
+      - image: ubuntu:20.04
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
 
-orbs:
-  maven: circleci/maven@1.1
+    environment:
+      TEST_REPORTS: /ntdt/ezloc/test-reports
+
+    working_directory: /ntdt/ezloc/project
+
+    steps:
+      - checkout
+
+      - run:
+          command: echo 127.0.0.1 devhost | sudo tee -a /etc/hosts
+
+      # Create Postgres users and database
+      # Note the YAML heredoc '|' for nicer formatting
+      - run: |
+          sudo -u root createuser -h localhost --superuser ubuntu &&
+          sudo createdb -h localhost test_db
+
+      - restore_cache:
+          keys:
+            - v1-ezloc-project-{{ checksum "project.clj" }}
+
+      - run:
+          environment:
+            SSH_TARGET: "localhost"
+            TEST_ENV: "linux"
+          command: |
+            set -xu
+            mkdir -p ${TEST_REPORTS}
+            run-tests.sh
+            cp out/tests/*.xml ${TEST_REPORTS}
+
+      - run: |
+          set -xu
+          mkdir -p /ntdt/ezloc/artifacts
+          create_jars.sh ${CIRCLE_BUILD_NUM}
+          cp *.jar /ntdt/ezloc/artifacts
+
+      - save_cache:
+          key: v1-ezloc-project-{{ checksum "project.clj" }}
+          paths:
+            - ~/.m2
+
+      # Save artifacts
+      - store_artifacts:
+          path: /ntdt/ezloc/artifacts
+          destination: build
+
+      # Upload test results
+      - store_test_results:
+          path: /ntdt/ezloc/test-reports
+
+  deploy-stage:
+    docker:
+      - image: ubuntu:20.04
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    working_directory: /ntdt/ezloc/project
+    steps:
+      - run:
+          name: Deploy if tests pass and branch is Staging
+          command: ansible-playbook site.yml -i staging
+
+  deploy-prod:
+    docker:
+      - image: ubuntu:20.04
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    working_directory: /ntdt/ezloc/project
+    steps:
+      - run:
+          name: Deploy if tests pass and branch is Master
+          command: ansible-playbook site.yml -i production
 
 workflows:
-  maven_test:
+  version: 2
+  build-deploy:
     jobs:
-      - maven/test
+      - build:
+          filters:
+            branches:
+              ignore:
+                - develop
+                - /feature-.*/
+      - deploy-stage:
+          requires:
+            - build
+          filters:
+            branches:
+              only: staging
+      - deploy-prod:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
