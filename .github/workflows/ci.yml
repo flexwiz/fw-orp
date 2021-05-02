@@ -14,7 +14,10 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-lastest, macOS-latest]
     permissions:
       contents: read
       packages: write
@@ -36,3 +39,8 @@ jobs:
     #   run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
     #   env:
     #     GITHUB_TOKEN: ${{ github.token }}
+  
+  publish:
+  
+    needs: build
+    
