@@ -1,4 +1,4 @@
-# ezloc-immo
+# Ezloc project
 Service de gestion des biens immobiliers
 
 ## Comment utiliser ce projet ?
@@ -6,7 +6,7 @@ Service de gestion des biens immobiliers
 ### 1 - Récupérer le projet en local
 
 ```sh
-git clone https://github.com/ntdtfr/ezloc-immo
+git clone https://github.com/ntdtfr/ezloc
 ```
 
 ### 2 - Exécuter l'application
@@ -24,7 +24,7 @@ mvn spring-boot:run
 * Avec `Docker Compose`
 
 ```sh
-docker-compose up --build ezloc-immo
+docker-compose up --build ezloc
 ```
 
 L'interface de `Swagger` est accessible via l'url : http://localhost:8080/swagger-ui.html
