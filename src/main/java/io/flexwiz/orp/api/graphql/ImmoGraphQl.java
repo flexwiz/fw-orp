@@ -1,11 +1,11 @@
-package fr.ntdt.ezloc.api.graphql;
+package io.flexwiz.orp.api.graphql;
 
 
-import fr.ntdt.ezloc.api.ApiResource;
-import fr.ntdt.ezloc.dto.CreateRealEstateRequest;
-import fr.ntdt.ezloc.dto.RealEstateDto;
-import fr.ntdt.ezloc.service.ImmoService;
-import fr.ntdt.ezloc.spi.data.RealEstate;
+import io.flexwiz.orp.api.ApiResource;
+import io.flexwiz.orp.dto.CreateRealEstateRequest;
+import io.flexwiz.orp.dto.RealEstateDto;
+import io.flexwiz.orp.service.OrpService;
+import io.flexwiz.orp.spi.data.RealEstate;
 import org.eclipse.microprofile.graphql.*;
 
 import javax.inject.Inject;
@@ -14,10 +14,10 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 
 @GraphQLApi
-public class ImmoGraphQl implements ApiResource {
+public class OrpGraphQl implements ApiResource {
 
     @Inject
-    ImmoService immoService;
+    OrpService orpService;
 
     @Query("GetAll")
     @Description("Get all registered realestates")
@@ -28,14 +28,14 @@ public class ImmoGraphQl implements ApiResource {
     @Description("Get all realEstates for a specified user")
     @Override
     public List<RealEstateDto> byUser(@Name("userId") Long userId) {
-        return immoService.allByUser(userId);
+        return orpService.allByUser(userId);
     }
 
     @Query("ById")
     @Description("Get a realEstate by its id")
     @Override
     public RealEstateDto byId(@Name("realEstateId") Long id, @Name("userId")Long userId) {
-        return immoService.byId(id, userId);
+        return orpService.byId(id, userId);
     }
 
     /**
@@ -51,7 +51,7 @@ public class ImmoGraphQl implements ApiResource {
     @Transactional
     @Override
     public Long create(CreateRealEstateRequest request) {
-        return immoService.create(request);
+        return orpService.create(request);
     }
 
 }

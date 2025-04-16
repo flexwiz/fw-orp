@@ -1,8 +1,8 @@
-package fr.ntdt.ezloc.api;
+package io.flexwiz.orp.api;
 
-import fr.ntdt.ezloc.dto.CreateRealEstateRequest;
-import fr.ntdt.ezloc.dto.RealEstateDto;
-import fr.ntdt.ezloc.spi.data.RealEstate;
+import io.flexwiz.orp.dto.CreateRealEstateRequest;
+import io.flexwiz.orp.dto.RealEstateDto;
+import io.flexwiz.orp.spi.data.RealEstate;
 
 import javax.validation.Valid;
 import java.util.List;

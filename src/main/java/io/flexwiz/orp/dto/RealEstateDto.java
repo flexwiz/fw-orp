@@ -1,4 +1,4 @@
-package fr.ntdt.ezloc.dto;
+package io.flexwiz.orp.dto;
 
 import lombok.Data;
 

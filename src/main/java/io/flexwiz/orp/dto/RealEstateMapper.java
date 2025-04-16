@@ -1,6 +1,6 @@
-package fr.ntdt.ezloc.dto;
+package io.flexwiz.orp.dto;
 
-import fr.ntdt.ezloc.spi.data.RealEstate;
+import io.flexwiz.orp.spi.data.RealEstate;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "cdi")

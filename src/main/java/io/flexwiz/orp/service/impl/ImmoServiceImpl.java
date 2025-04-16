@@ -1,11 +1,11 @@
-package fr.ntdt.ezloc.service.impl;
+package io.flexwiz.orp.service.impl;
 
-import fr.ntdt.ezloc.dto.CreateRealEstateRequest;
-import fr.ntdt.ezloc.dto.RealEstateDto;
-import fr.ntdt.ezloc.dto.RealEstateMapper;
-import fr.ntdt.ezloc.service.ImmoService;
-import fr.ntdt.ezloc.spi.data.RealEstate;
-import fr.ntdt.ezloc.spi.data.RealEstateRepository;
+import io.flexwiz.orp.dto.CreateRealEstateRequest;
+import io.flexwiz.orp.dto.RealEstateDto;
+import io.flexwiz.orp.dto.RealEstateMapper;
+import io.flexwiz.orp.service.OrpService;
+import io.flexwiz.orp.spi.data.RealEstate;
+import io.flexwiz.orp.spi.data.RealEstateRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
-public class ImmoServiceImpl implements ImmoService {
+public class OrpServiceImpl implements OrpService {
 
     @Inject
     RealEstateMapper realEstateMapper;

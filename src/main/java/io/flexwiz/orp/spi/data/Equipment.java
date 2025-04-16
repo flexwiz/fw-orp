@@ -1,4 +1,4 @@
-package fr.ntdt.ezloc.spi.data;
+package io.flexwiz.orp.spi.data;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 

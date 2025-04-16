@@ -1,11 +1,11 @@
-package fr.ntdt.ezloc.service;
+package io.flexwiz.orp.service;
 
-import fr.ntdt.ezloc.dto.CreateRealEstateRequest;
-import fr.ntdt.ezloc.dto.RealEstateDto;
+import io.flexwiz.orp.dto.CreateRealEstateRequest;
+import io.flexwiz.orp.dto.RealEstateDto;
 
 import java.util.List;
 
-public interface ImmoService {
+public interface OrpService {
 
     /**
      * Create a new realEstate
